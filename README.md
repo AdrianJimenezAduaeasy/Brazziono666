@@ -2,19 +2,6 @@ Microservicios Brazzino666 🎲
 Descripción 📝
 Este repositorio contiene un sistema de microservicios para una plataforma de casino, desarrollado con Django y Django REST Framework. Incluye módulos independientes para gestión de cuentas y verificación KYC .
 
-Estructura del Proyecto 🏗️
-Brazzino666/
-├── microservicio_cuentas/       # Servicio de gestión de cuentas de usuario
-│   ├── cuentas_core/
-│   │   ├── models/              # Modelos de base de datos
-│   │   ├── services.py          # Lógica de negocio
-│   │   └── ...
-├── microservicio_kyc/           # Servicio de verificación de identidad
-    ├── kyc_core/
-        ├── models/              # Modelos KYC
-        ├── services.py          # Lógica de verificación
-        └── ...
-        
 Servicios Implementados 🛠️
 1. Microservicio de Cuentas
 Creación y gestión de cuentas de usuario
