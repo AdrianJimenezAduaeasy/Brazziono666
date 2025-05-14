@@ -28,6 +28,8 @@ venv\Scripts\activate     # Windows
 
 
 Ejecución 🚀
+# Microservicio de usuarios y pagos
+python manage.py runserver
 # Microservicio de cuentas
 cd microservicio_cuentas
 python manage.py runserver 8000
