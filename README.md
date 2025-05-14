@@ -28,6 +28,9 @@ venv\Scripts\activate     # Windows
 
 
 Ejecución 🚀
+# Microservicio de apuestas
+cd microservicio_apuestas
+python manage.py runserver
 # Microservicio de usuarios y pagos
 python manage.py runserver
 # Microservicio de cuentas y reportes
