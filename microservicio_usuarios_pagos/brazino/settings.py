@@ -90,12 +90,17 @@ WSGI_APPLICATION = 'brazino.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'Brazino',
-        'USER': 'root',
-        'PASSWORD': 'Bared664',
+        'NAME': 'brazzino666',
+        'USER': 'adminBrazzino',
+        'PASSWORD': '1234',
+        'HOST': '34.72.164.216',
         'PORT': '3306',
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",  
+        }
     }
 }
+
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
