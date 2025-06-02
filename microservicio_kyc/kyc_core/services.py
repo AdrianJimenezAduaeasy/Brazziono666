@@ -1,11 +1,15 @@
 from .serializers import KycSerializer, BaseResponseSerializer
 from .models import VerificacionKYC
 from django.views.decorators.csrf import csrf_exempt
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes, authentication_classes
+from rest_framework.authentication import TokenAuthentication  # o JWTAuthentication
+from kyc_core.permissions import EsAdminStaff
+from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 from rest_framework.response import Response
 
-@csrf_exempt
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated]) 
 @api_view(['POST'])
 def crear_kyc(request):
     if not request.data:
@@ -37,8 +41,9 @@ def crear_kyc(request):
         }, status=status.HTTP_400_BAD_REQUEST)
     
 
-@csrf_exempt
 @api_view(['GET'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated, EsAdminStaff]) 
 def obtener_kyc(request, kyc_id):
     if not kyc_id:
         return Response({
@@ -62,8 +67,9 @@ def obtener_kyc(request, kyc_id):
         }, status=status.HTTP_404_NOT_FOUND)
     
     
-@csrf_exempt
 @api_view(['GET'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated, EsAdminStaff]) 
 def listar_kyc(request):
     kyc = VerificacionKYC.objects.all()
     serializer = KycSerializer(kyc, many=True)
@@ -73,8 +79,9 @@ def listar_kyc(request):
         'data': serializer.data
     }, status=status.HTTP_200_OK)
 
-@csrf_exempt
 @api_view(['PUT'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated, EsAdminStaff]) 
 def actualizar_kyc(request, kyc_id):
     if not kyc_id:
         return Response({

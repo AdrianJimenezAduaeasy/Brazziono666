@@ -1,11 +1,17 @@
 from django.views.decorators.csrf import csrf_exempt
-from rest_framework.decorators import api_view
-from rest_framework import status
 from rest_framework.response import Response
 from .models import Cuenta, ReporteCuenta
 from .serializers import CuentaSerializer, ReporteCuentaSerializer
+from rest_framework.decorators import api_view, permission_classes, authentication_classes
+from rest_framework.authentication import TokenAuthentication  # o JWTAuthentication
+from cuentas_core.permissions import EsAdminStaff
+from rest_framework.permissions import IsAuthenticated
+from rest_framework import status
+from rest_framework.response import Response
 
-@csrf_exempt
+
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated]) 
 @api_view(['POST'])
 def crear_cuenta(request): 
     if not request.data:  
@@ -37,7 +43,8 @@ def crear_cuenta(request):
             'data': serializer.errors
         }, status=status.HTTP_400_BAD_REQUEST)
 
-@csrf_exempt
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated, EsAdminStaff]) 
 @api_view(['GET'])
 def obtener_cuenta(request, cuenta_id):
     if not  cuenta_id:
@@ -61,9 +68,10 @@ def obtener_cuenta(request, cuenta_id):
             'data': None
         }, status=status.HTTP_404_NOT_FOUND)
 
-@csrf_exempt
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated, EsAdminStaff])
 @api_view(['GET'])
-def obtener_cuentas(request):  # Cambiado a recibir request
+def obtener_cuentas(request):  
     cuentas = Cuenta.objects.all()
     if cuentas.exists():
         return Response({
@@ -78,9 +86,10 @@ def obtener_cuentas(request):  # Cambiado a recibir request
             'data': None
         }, status=status.HTTP_404_NOT_FOUND)
 
-@csrf_exempt
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated, EsAdminStaff]) 
 @api_view(['PUT'])
-def actualizar_cuenta(request, cuenta_id):  # Cambiado el orden de los parámetros
+def actualizar_cuenta(request, cuenta_id): 
     if not cuenta_id or not request.data:
         return Response({
             'status': status.HTTP_400_BAD_REQUEST,
@@ -113,7 +122,8 @@ def actualizar_cuenta(request, cuenta_id):  # Cambiado el orden de los parámetr
             'data': None
         }, status=status.HTTP_404_NOT_FOUND)
 
-@csrf_exempt
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated, EsAdminStaff]) 
 @api_view(['DELETE'])
 def eliminar_cuenta(request, cuenta_id):  # Agregado request como primer parámetro
     if not cuenta_id:
@@ -138,7 +148,8 @@ def eliminar_cuenta(request, cuenta_id):  # Agregado request como primer paráme
             'data': None
         }, status=status.HTTP_404_NOT_FOUND)
     
-@csrf_exempt
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated]) 
 @api_view(['PUT'])
 def recargar_cuenta(request, cuenta_id):
     if not cuenta_id or not request.data:
@@ -174,7 +185,8 @@ def recargar_cuenta(request, cuenta_id):
             'data': None
         }, status=status.HTTP_404_NOT_FOUND)
 
-@csrf_exempt
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated, EsAdminStaff]) 
 @api_view(['POST']) 
 def crear_reporte_cuenta(request):
     if not request.data:
@@ -199,7 +211,8 @@ def crear_reporte_cuenta(request):
             'data': serializer.errors
         }, status=status.HTTP_400_BAD_REQUEST)
     
-@csrf_exempt
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated, EsAdminStaff]) 
 @api_view(['GET'])
 def obtener_reportes_cuenta(request, cuenta_id):
     if not cuenta_id:
@@ -223,7 +236,8 @@ def obtener_reportes_cuenta(request, cuenta_id):
             'data': None
         }, status=status.HTTP_404_NOT_FOUND)
     
-@csrf_exempt
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated, EsAdminStaff]) 
 @api_view(['GET'])
 def consultar_reportes(request):
     reportes = ReporteCuenta.objects.all()
