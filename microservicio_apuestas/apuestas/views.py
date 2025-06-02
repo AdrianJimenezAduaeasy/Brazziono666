@@ -40,3 +40,44 @@ def listar_apuestas(request):
 
     return JsonResponse(lista, safe=False)
 
+
+def detalle_apuesta(request, id):
+    try:
+        apuesta = Apuesta.objects.get(pk=id)
+        data = {
+            'id': apuesta.id,
+            'id_usuario': apuesta.id_usuario,
+            'id_juego': apuesta.id_juego,
+            'monto_apuesta': float(apuesta.monto_apuesta),
+            'fecha_apuesta': apuesta.fecha_apuesta.isoformat(),
+            'estado': apuesta.estado,
+        }
+        return JsonResponse(data, status=200)
+    except Apuesta.DoesNotExist:
+        return JsonResponse({'error': 'Apuesta no encontrada'}, status=404)
+    
+
+@csrf_exempt
+def actualizar_estado(request, id):
+    if request.method not in ('PATCH', 'POST'):
+        return JsonResponse({'mensaje': 'Usa PATCH o POST para actualizar'}, status=200)
+
+    try:
+        apuesta = Apuesta.objects.get(pk=id)
+    except Apuesta.DoesNotExist:
+        return JsonResponse({'error': 'Apuesta no encontrada'}, status=404)
+
+    try:
+        data = json.loads(request.body)
+        nuevo_estado = data.get('estado')
+        if not nuevo_estado:
+            return JsonResponse({'error': 'Falta campo "estado"'}, status=400)
+
+        apuesta.estado = nuevo_estado
+        apuesta.save()
+        return JsonResponse({'mensaje': 'Estado actualizado', 'id': apuesta.id, 'estado': apuesta.estado}, status=200)
+    except json.JSONDecodeError:
+        return JsonResponse({'error': 'JSON inválido'}, status=400)
+    
+    #{ "estado": "ganado" }
+
