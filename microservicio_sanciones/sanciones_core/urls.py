@@ -16,9 +16,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from .services import aplicar_sancion_servicio
+from .services import aplicar_sancion_servicio, listar_sanciones_servicio, actualizar_sancion_servicio
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('sanciones/', aplicar_sancion_servicio, name='aplicar-sancion-servicio')
+    path('sanciones/', aplicar_sancion_servicio, name='aplicar-sancion-servicio'),
+    path('sanciones/listar/', listar_sanciones_servicio, name='listar_sanciones'),
+    path('sanciones/actualizar/<int:sancion_id>/', actualizar_sancion_servicio, name='actualizar_sancion'),
 ]

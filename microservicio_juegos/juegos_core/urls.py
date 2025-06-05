@@ -17,9 +17,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from .services import crear_juego_servicio
+from .services import crear_juego_servicio, listar_juegos_servicio, actualizar_juego_servicio
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('crear/', crear_juego_servicio, name='crear-juego-servicio'),
+    path('juegos/listar', listar_juegos_servicio),
+    path('juegos/actualizar/<int:id_juego>', actualizar_juego_servicio),
 ]
